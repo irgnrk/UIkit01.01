@@ -1,5 +1,4 @@
 import UIKit
-//import SnapKit
 
 class ViewController: UIViewController {
     
@@ -8,7 +7,7 @@ class ViewController: UIViewController {
     private var constantHeight: CGFloat = 0
     private var constantHeightFields: CGFloat = 0
     private var constantWidthField: CGFloat = 0
-    private let cornerRadius: CGFloat = 20
+    private var cornerRadius: CGFloat = 18
     private let biggestFontSize: CGFloat = 30
     private let largeFontSize: CGFloat = 20
     private let smallFontSize: CGFloat = 15
@@ -77,7 +76,7 @@ class ViewController: UIViewController {
     }()
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Forgot your password", for: .normal)
+        button.setTitle("Forgot your password?", for: .normal)
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.systemOrange, for: .highlighted)
@@ -132,12 +131,58 @@ class ViewController: UIViewController {
         button.setTitleColor(.systemOrange, for: .highlighted)
         button.titleLabel?.font = .boldSystemFont(ofSize: smallFontSize)
         button.layer.cornerRadius = cornerRadius
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .blue
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-   
+    private lazy var twitterImageView: UIImageView = {
+        let iconImageView = UIImageView()
+        let image = UIImage(named: "twiticon")
+        iconImageView.image = image
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        return iconImageView
+    }()
+    
+    private lazy var facebookImageView: UIImageView = {
+        let iconImageView = UIImageView()
+        let image = UIImage(named: "facebookicon")
+        iconImageView.image = image
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        return iconImageView
+    }()
+    
+    private lazy var addAccountView: UIView = {
+        let conteinerView = UIView()
+        conteinerView.backgroundColor = .white
+        conteinerView.translatesAutoresizingMaskIntoConstraints = false
+        conteinerView.layer.cornerRadius = cornerRadius
+        conteinerView.layer.backgroundColor = CGColor(red: 255, green: 255, blue: 255, alpha: 0.1)
+        return conteinerView
+    }()
+    
+    private lazy var addAccountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Dont have account?"
+        label.font = .systemFont(ofSize: smallFontSize)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var addAccountButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Sign up", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(.systemOrange, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: smallFontSize)
+        button.layer.cornerRadius = cornerRadius
+        button.backgroundColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+
     
     //MARK: -> Life Cycle
 
@@ -154,7 +199,7 @@ class ViewController: UIViewController {
         constantHeight = view.frame.height / 18
         constantHeightFields = constantHeight / 2
         constantWidthField = view.frame.width * 0.7
-       // print(constantHeight)
+        cornerRadius = constantHeightFields
     }
     
     private func setupHierarchy() {
@@ -176,6 +221,11 @@ class ViewController: UIViewController {
         
         conteinerForSocialFacebook.addSubview(socialFacebookButton)
         conteinerForSocialTwitter.addSubview(socialTwitterButton)
+        socialTwitterButton.addSubview(twitterImageView)
+        socialFacebookButton.addSubview(facebookImageView)
+        conteinerForNewAccount.addSubview(addAccountView)
+        addAccountView.addSubview(addAccountLabel)
+        addAccountView.addSubview(addAccountButton)
     }
     
     private func setupLayout() {
@@ -243,9 +293,36 @@ class ViewController: UIViewController {
          socialTwitterButton.centerXAnchor.constraint(equalTo: conteinerForSocialTwitter.centerXAnchor),
          socialTwitterButton.centerYAnchor.constraint(equalTo: conteinerForSocialTwitter.centerYAnchor),
          socialTwitterButton.heightAnchor.constraint(equalToConstant: constantHeight),
-         socialFacebookButton.heightAnchor.constraint(equalToConstant: constantHeight)
+         socialFacebookButton.heightAnchor.constraint(equalToConstant: constantHeight),
          
+         facebookImageView.heightAnchor.constraint(equalToConstant: constantHeight * 0.5),
+         facebookImageView.widthAnchor.constraint(equalToConstant: constantHeight * 0.5),
+         facebookImageView.leftAnchor.constraint(equalTo: socialFacebookButton.leftAnchor, constant: constantHeight * 0.3),
+         facebookImageView.centerYAnchor.constraint(equalTo: socialFacebookButton.centerYAnchor),
          
+         twitterImageView.heightAnchor.constraint(equalToConstant: constantHeight * 0.5),
+         twitterImageView.widthAnchor.constraint(equalToConstant: constantHeight * 0.5),
+         twitterImageView.leftAnchor.constraint(equalTo: socialTwitterButton.leftAnchor, constant: constantHeight * 0.3),
+         twitterImageView.centerYAnchor.constraint(equalTo: socialTwitterButton.centerYAnchor),
+         
+        
+         conteinerForNewAccount.topAnchor.constraint(equalTo: conteinerForSocialFacebook.bottomAnchor),
+         conteinerForNewAccount.widthAnchor.constraint(equalTo: view.widthAnchor),
+         conteinerForNewAccount.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+         
+         addAccountView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+         addAccountView.topAnchor.constraint(equalTo: conteinerForNewAccount.topAnchor),
+         addAccountView.heightAnchor.constraint(equalToConstant: constantHeight),
+         addAccountView.widthAnchor.constraint(equalToConstant: constantWidthField),
+         
+         addAccountLabel.leftAnchor.constraint(equalTo: addAccountView.leftAnchor, constant: constantHeight * 0.5),
+         addAccountLabel.centerYAnchor.constraint(equalTo: addAccountView.centerYAnchor),
+         addAccountLabel.heightAnchor.constraint(equalTo: addAccountView.heightAnchor),
+         
+         addAccountButton.rightAnchor.constraint(equalTo: addAccountView.rightAnchor),
+         addAccountButton.centerYAnchor.constraint(equalTo: addAccountView.centerYAnchor),
+         addAccountButton.heightAnchor.constraint(equalTo: addAccountView.heightAnchor),
+         addAccountButton.widthAnchor.constraint(equalToConstant: constantHeight * 2)
          
          
          
